@@ -9,7 +9,7 @@ get_rows_by_daterange <- function(begin_date, end_date, rows, date_col_name = "D
 x_by_y <- function(rows, freq_col_name = "Frequency", cat_col_name = "Category") {
   x_by_y <- data.frame(rows[freq_col_name], rows[cat_col_name])
   colnames(x_by_y) <- c(freq_col_name, cat_col_name)
-  agg <- aggregate(rows[freq_col_amt], by = list(Category = rows[cat_col_name]), sum)
+  agg <- aggregate(rows[,freq_col_name], by = list(Category = rows[,cat_col_name]), FUN = sum)
 }
 
 # dates come in m/dd/yyyy format
@@ -19,9 +19,6 @@ factor_to_date <- function(fdate) {
 
 # get toal amount spent by category
 amount_by_category <- function(transactions) {
-  #amt_cat <- data.frame(transactions$Amount, transactions$Category)
-  #colnames(amt_cat) <- c("Amount", "Category")
-  #aggregate(amt_cat$Amount, by = list(Category = amt_cat$Category), sum)
   x_by_y(transactions, "Amount", "Category")
 }
 
@@ -42,7 +39,9 @@ preprocess <- function(raw_data) {
 }
 
 process <- function(preprocessed_data) {
-  amt_by_cat <- amount_by_category(processed_data) 
+  amt_by_cat <- amount_by_category(preprocessed_data) 
+  colnames(amt_by_cat) <- c('Amount', 'Category')
+  amt_by_cat
 }
 
 writeout <- function(processed_data) {

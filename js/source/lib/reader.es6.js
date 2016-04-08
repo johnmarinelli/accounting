@@ -1,5 +1,6 @@
 export function readTextFile(file, cb) {
-  let fileUrl = 'file:///' + file,
+  let currentPath = location.href.split('/').slice(0, -1).join('/'),
+    fileUrl = currentPath + '/' + file,
     rawFile = new XMLHttpRequest();
 
   Array.prototype.map = (fun) => {
@@ -20,15 +21,12 @@ export function readTextFile(file, cb) {
     return newArray;
   };
 
-  let currentPath = location.href.split('/').slice(0, -1).join('/');
 
   rawFile.open('GET', fileUrl, false);
   rawFile.onreadystatechange = () => {
     if (rawFile.readyState === 4) {
       if (rawFile.status === 200 || rawFile.status == 0) {
-        let allText = rawFile.responseText;
-        alert(allText);
-        cb(allText)
+        cb(rawFile.responseText);
       }
     }
   }
