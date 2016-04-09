@@ -40,7 +40,7 @@ preprocess <- function(raw_data) {
 
 process <- function(preprocessed_data) {
   amt_by_cat <- amount_by_category(preprocessed_data) 
-  colnames(amt_by_cat) <- c('Amount', 'Category')
+  colnames(amt_by_cat) <- c('Category', 'Amount')
   amt_by_cat
 }
 
@@ -52,4 +52,5 @@ writeout <- function(processed_data) {
 
 # load -> preprocess -> process -> writeout
 program <- Compose(load, preprocess, process, writeout)
+get_processed_data <- Compose(load, preprocess, process)
 program('../resources/transactions.csv')
