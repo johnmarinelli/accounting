@@ -1,17 +1,29 @@
 library(shiny)
 
+d3 <- function(inputoutputID) {
+  div(id=inputoutputID,class=inputoutputID)
+}
+
 # define UI for application that draws a histogram
 shinyUI(fluidPage(
   # App title
   titlePanel("lmao money hahahaha"),
 
-  # Sidebar w/ slider input for # of bins
-  sidebarLayout(
-    sidebarPanel(
-    ),
+  fluidRow(
+    column(12, 
+      textOutput("moneyPerDay")
+    )
+  ),
 
-    mainPanel(
-      plotOutput("distPlot")
+  fluidRow(
+    column(12,
+      d3("barplot")
+    )
+  ),
+  
+  fluidRow(
+    column(12, 
+      includeHTML("amount_by_category.html")
     )
   )
 ))

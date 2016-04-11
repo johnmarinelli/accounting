@@ -1,0 +1,40 @@
+<script src="http://d3js.org/d3.v3.js"></script>
+<script>
+(function() {
+  var outBinding = new Shiny.OutputBinding();
+
+  this.countValue=0;
+  
+  updateView = function(message) {
+    var svg = d3.select(".barplot").select("svg")
+
+    svg.append("text")
+      .transition()
+      .attr("x",message[0])
+      .attr("y",message[1])
+      .text(countValue)
+      .each("end",function(){
+        if(countValue<100) {
+          countValue+=1;
+          $(".barplot").trigger("change");
+        }
+      })
+  }
+  
+  var d3OutputBinding = new Shiny.OutputBinding();
+  $.extend(d3OutputBinding, {
+    find: function(scope) {
+      return $(scope).find(".barplot");
+    },
+    renderError: function(el,error) {
+      console.log(error);
+    },
+    renderValue: function(el,data) {
+      console.log(data);
+      updateView(data);
+    }
+  });
+  Shiny.outputBindings.register(d3OutputBinding);
+  
+})()
+</script>

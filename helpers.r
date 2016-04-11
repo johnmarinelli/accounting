@@ -22,8 +22,8 @@ amount_by_category <- function(transactions) {
   x_by_y(transactions, "Amount", "Category")
 }
 
-get_daily_spending_amt <- function(rows) {
-  sum(transactions$Amount) / as.Numeric(max(rows$Date) - min(rows$Date))
+daily_spending_amt <- function(transaction_rows) {
+  sum(transaction_rows$Amount) / as.numeric(max(transaction_rows$Date) - min(transaction_rows$Date))
 }
 
 load <- function(filepath) {
@@ -53,4 +53,5 @@ writeout <- function(processed_data) {
 # load -> preprocess -> process -> writeout
 program <- Compose(load, preprocess, process, writeout)
 get_processed_data <- Compose(load, preprocess, process)
-program('../resources/transactions.csv')
+get_daily_spending_amt <- Compose(load, preprocess, daily_spending_amt)
+
