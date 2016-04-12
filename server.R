@@ -15,7 +15,7 @@ shinyServer(function(input, output) {
   })
 
   output$barplot <- function() {
-    list(rnorm(1) * 400 + 200, rnorm(1) * 400 + 200)
+    get_processed_data('data/transactions.csv')
   }
 })
 

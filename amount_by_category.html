@@ -2,23 +2,87 @@
 <script>
 (function() {
   var outBinding = new Shiny.OutputBinding();
-
-  this.countValue=0;
   
-  updateView = function(message) {
-    var svg = d3.select(".barplot").select("svg")
+  updateView = function(d) {
+    var amounts = d['Amount'],
+      categories = d['Category'],
+      minAmt = Math.min.apply(Math, amounts),
+      maxAmt = Math.max.apply(Math, amounts),
+      margin = { top: 20, right: 30, bottom: 30, left: 40 },
+      width = 960 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom
+    
+    var y = d3.scale.linear()
+              .domain([0, maxAmt])
+              .range([height, 0]),
+      x = d3.scale.ordinal()
+            .domain(categories)
+            .rangeRoundBands([0, width], 0.1),
 
-    svg.append("text")
-      .transition()
-      .attr("x",message[0])
-      .attr("y",message[1])
-      .text(countValue)
-      .each("end",function(){
-        if(countValue<100) {
-          countValue+=1;
-          $(".barplot").trigger("change");
-        }
-      })
+      chart = d3.select('.barplot')
+                .attr('width', width)
+                .attr('height', height)
+                .append('g')
+                .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')'),
+      barWidth = width / categories.length,
+      xAxis = d3.svg.axis()
+                .scale(x)
+                .orient('bottom'),
+      yAxis = d3.svg.axis()
+                .scale(y)
+                .orient('left')
+                .ticks(10, '$'),
+      svg = d3.select('.barplot').append('svg')
+              .attr('width', width + margin.left + margin.right)
+              .attr('height', height + margin.top + margin.bottom)
+                .append('g')
+                .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+
+    var normData = []
+    Array.prototype.forEach.call(categories, function(e, i) {
+      normData.push({ category: e, amount: amounts[i] })
+    })
+/*
+    var bar = chart.selectAll('g')
+                .data(normData)
+                  .enter()
+                  .append('g')
+                  .attr('transform', function(d, i) { return 'translate(' + i * barWidth + ',0' })
+
+    bar.append('rect')
+      .attr('y', function(d) { return y(d.amount) })
+      .attr('height', function(d) { return height - y(d.amount) })
+      .attr('width', barWidth - 1)
+
+    bar.append('text')
+      .attr('x', barWidth / 2)
+      .attr('y', function(d) { return y(d.amount) + 3 })
+      .attr('dy', '.75em')
+      .text(function(d) { return d.category })
+*/
+    svg.append('g')
+       .attr('class', 'x axis')
+       .attr('transform', 'translate(0,' + height + ')')
+       .call(xAxis)
+
+    svg.append('g')
+       .attr('class', 'y axis')
+       .call(yAxis)
+        .append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('y', 6)
+        .attr('dy', '.71em')
+        .style('text-anchor', 'end')
+        .text('Amount')
+
+    svg.selectAll('.bar')
+      .data(normData)
+      .enter().append('rect')
+        .attr('class', 'bar')
+        .attr('x', function(d) { return x(d.category) })
+        .attr('width', x.rangeBand())
+        .attr('y', function(d) { return y(d.amount) })
+        .attr('height', function(d) { return height - y(d.amount) })
   }
   
   var d3OutputBinding = new Shiny.OutputBinding();
@@ -27,10 +91,9 @@
       return $(scope).find(".barplot");
     },
     renderError: function(el,error) {
-      console.log(error);
+      alert(error);
     },
     renderValue: function(el,data) {
-      console.log(data);
       updateView(data);
     }
   });
