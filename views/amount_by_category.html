@@ -9,7 +9,7 @@
       minAmt = Math.min.apply(Math, amounts),
       maxAmt = Math.max.apply(Math, amounts),
       margin = { top: 20, right: 30, bottom: 30, left: 40 },
-      width = 960 - margin.left - margin.right,
+      width = 1368 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom
     
     var y = d3.scale.linear()
@@ -42,24 +42,7 @@
     Array.prototype.forEach.call(categories, function(e, i) {
       normData.push({ category: e, amount: amounts[i] })
     })
-/*
-    var bar = chart.selectAll('g')
-                .data(normData)
-                  .enter()
-                  .append('g')
-                  .attr('transform', function(d, i) { return 'translate(' + i * barWidth + ',0' })
 
-    bar.append('rect')
-      .attr('y', function(d) { return y(d.amount) })
-      .attr('height', function(d) { return height - y(d.amount) })
-      .attr('width', barWidth - 1)
-
-    bar.append('text')
-      .attr('x', barWidth / 2)
-      .attr('y', function(d) { return y(d.amount) + 3 })
-      .attr('dy', '.75em')
-      .text(function(d) { return d.category })
-*/
     svg.append('g')
        .attr('class', 'x axis')
        .attr('transform', 'translate(0,' + height + ')')

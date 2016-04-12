@@ -23,7 +23,7 @@ shinyUI(fluidPage(
   
   fluidRow(
     column(12, 
-      includeHTML("amount_by_category.html")
+      includeHTML("views/amount_by_category.html")
     )
   )
 ))
