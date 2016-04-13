@@ -8,6 +8,9 @@ d3 <- function(inputoutputID) {
 shinyUI(fluidPage(
   # App title
   titlePanel("lmao money hahahaha"),
+  mainPanel(
+    tags$script(src="http://d3js.org/d3.v3.js")
+  ),
 
   fluidRow(
     column(12, 
@@ -17,13 +20,8 @@ shinyUI(fluidPage(
 
   fluidRow(
     column(12,
-      d3("barplot")
-    )
-  ),
-  
-  fluidRow(
-    column(12, 
-      includeHTML("views/amount_by_category.html")
+      d3("barplot"),
+      includeScript("assets/js/compiled/bundle.js")
     )
   )
 ))

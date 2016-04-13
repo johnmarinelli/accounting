@@ -44,14 +44,8 @@ process <- function(preprocessed_data) {
   amt_by_cat
 }
 
-writeout <- function(processed_data) {
-  json <- toJSON(unname(split(processed_data, 1:nrow(processed_data)))) 
-  write(json, file = '../resources/processed.json')
-}
 
-
-# load -> preprocess -> process -> writeout
-program <- Compose(load, preprocess, process, writeout)
+# load -> preprocess -> process 
 get_processed_data <- Compose(load, preprocess, process)
 get_daily_spending_amt <- Compose(load, preprocess, daily_spending_amt)
 
