@@ -9,7 +9,9 @@ shinyUI(fluidPage(
   # App title
   titlePanel("lmao money hahahaha"),
   mainPanel(
-    tags$script(src="http://d3js.org/d3.v3.js")
+    tags$link(rel = "stylesheet", type = "text/css", href = "assets/stylesheets/css/style.css"),
+    tags$script(src="http://d3js.org/d3.v3.js"),
+    tags$script(src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js")
   ),
 
   fluidRow(
