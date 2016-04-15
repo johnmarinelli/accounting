@@ -12,6 +12,20 @@ x_by_y <- function(rows, freq_col_name = "Frequency", cat_col_name = "Category")
   agg <- aggregate(rows[,freq_col_name], by = list(Category = rows[,cat_col_name]), FUN = sum)
 }
 
+# Apply fn to coll every n times.
+every <- function(coll, n, fn) {
+  new <- c()
+  for(i in 1:length(a)) {
+    if (i % n == 0) new <- c(new, fn(coll[n]))
+  } 
+  new
+}
+
+# Return a formatted string for USD.
+format_currency <- function(amt) {
+  round(amt, 2)
+}
+
 # dates come in m/dd/yyyy format
 factor_to_date <- function(fdate) {
   as.Date(fdate, "%m/%d/%Y")

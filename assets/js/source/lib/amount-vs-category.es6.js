@@ -1,5 +1,5 @@
 let buildChart = () => {
-  const outBinding = new Shiny.OutputBinding()
+  const outBinding = new Shiny.OutputBinding();
   
   const updateView = (d) => {
     const amounts = d['Amount'],
@@ -8,7 +8,7 @@ let buildChart = () => {
       maxAmt = Math.max.apply(Math, amounts),
       margin = { top: 20, right: 30, bottom: 30, left: 40 },
       width = 1368 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom
+      height = 500 - margin.top - margin.bottom;
     
     let y = d3.scale.linear()
               .domain([0, maxAmt])
@@ -31,8 +31,7 @@ let buildChart = () => {
 
       yAxis = d3.svg.axis()
                 .scale(y)
-                .orient('left')
-                .ticks(10, '$'),
+                .orient('left'),
 
       tip = d3.tip()
               .attr('class', 'category-label')
@@ -42,9 +41,9 @@ let buildChart = () => {
               .attr('width', width + margin.left + margin.right)
               .attr('height', height + margin.top + margin.bottom)
                 .append('g')
-                .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+                .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-    let normData = []
+    let normData = [];
     Array.prototype.forEach.call(categories, (e, i) => {
       normData.push({ category: e, amount: amounts[i] })
     })
@@ -52,7 +51,7 @@ let buildChart = () => {
     svg.append('g')
        .attr('class', 'x axis')
        .attr('transform', 'translate(0,' + height + ')')
-       .call(xAxis)
+       .call(xAxis);
 
     svg.append('g')
        .attr('class', 'y axis')
@@ -62,7 +61,7 @@ let buildChart = () => {
         .attr('y', 6)
         .attr('dy', '.71em')
         .style('text-anchor', 'end')
-        .text('Amount')
+        .text('Amount');
 
     svg.selectAll('.bar')
       .data(normData)
@@ -72,21 +71,22 @@ let buildChart = () => {
         .attr('width', x.rangeBand())
         .attr('y', (d) => y(d.amount) )
         .attr('height', (d) => height - y(d.amount))
+        .attr('fill', (d) => d3.rgb('red'))
         .on('mouseover', tip.show)
-        .on('mouseout', tip.hide)
+        .on('mouseout', tip.hide);
 
     svg.call(tip)
-  }
+  };
   
-  let d3OutputBinding = new Shiny.OutputBinding()
+  let d3OutputBinding = new Shiny.OutputBinding();
 
   $.extend(d3OutputBinding, {
     find: (scope) => $(scope).find('.barplot'),
     renderError: (el,error) => alert(error),
     renderValue: (el,data) => updateView(data)
-  })
+  });
 
-  Shiny.outputBindings.register(d3OutputBinding)
+  Shiny.outputBindings.register(d3OutputBinding);
 }
 
 export { buildChart }

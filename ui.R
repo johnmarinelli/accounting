@@ -16,7 +16,9 @@ shinyUI(fluidPage(
 
   fluidRow(
     column(12, 
-      textOutput("moneyPerDay")
+      div(
+        textOutput("moneyPerDay"), class = "money-per-day"
+      )
     )
   ),
 
