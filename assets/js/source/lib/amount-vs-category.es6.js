@@ -2,11 +2,14 @@ let buildChart = () => {
   const outBinding = new Shiny.OutputBinding();
   
   const updateView = (d) => {
+    d3.select('.barplot svg')
+      .remove();
+
     const amounts = d['Amount'],
       categories = d['Category'],
       minAmt = Math.min.apply(Math, amounts),
       maxAmt = Math.max.apply(Math, amounts),
-      margin = { top: 20, right: 30, bottom: 30, left: 40 },
+      margin = { top: 20, right: 30, bottom: 30, left: 100 },
       width = 1368 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
     
@@ -49,7 +52,7 @@ let buildChart = () => {
     })
 
     svg.append('g')
-       .attr('class', 'x axis')
+       .attr('class', 'x-axis-label')
        .attr('transform', 'translate(0,' + height + ')')
        .call(xAxis);
 
@@ -82,7 +85,7 @@ let buildChart = () => {
 
   $.extend(d3OutputBinding, {
     find: (scope) => $(scope).find('.barplot'),
-    renderError: (el,error) => alert(error),
+    renderError: (el,error) => console.log(error),
     renderValue: (el,data) => updateView(data)
   });
 

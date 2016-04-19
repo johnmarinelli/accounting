@@ -15,15 +15,15 @@ x_by_y <- function(rows, freq_col_name = "Frequency", cat_col_name = "Category")
 # Apply fn to coll every n times.
 every <- function(coll, n, fn) {
   new <- c()
-  for(i in 1:length(a)) {
-    if (i % n == 0) new <- c(new, fn(coll[n]))
+  for(i in 1:length(coll)) {
+    if (i %% n == 0) new <- c(new, fn(coll[i]))
   } 
   new
 }
 
 # Return a formatted string for USD.
 format_currency <- function(amt) {
-  round(amt, 2)
+  paste("$", format(amt, nsmall = 2, digits = 2, big.mark = ",", scientific = FALSE), sep = "")
 }
 
 # dates come in m/dd/yyyy format
@@ -31,7 +31,7 @@ factor_to_date <- function(fdate) {
   as.Date(fdate, "%m/%d/%Y")
 }
 
-# get toal amount spent by category
+# get total amount spent by category
 amount_by_category <- function(transactions) {
   x_by_y(transactions, "Amount", "Category")
 }
@@ -58,8 +58,8 @@ process <- function(preprocessed_data) {
   amt_by_cat
 }
 
-
 # load -> preprocess -> process 
+get_preprocessed_data <- Compose(load, preprocess)
 get_processed_data <- Compose(load, preprocess, process)
 get_daily_spending_amt <- Compose(load, preprocess, daily_spending_amt)
 

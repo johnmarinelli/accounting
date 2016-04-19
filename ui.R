@@ -4,10 +4,9 @@ d3 <- function(inputoutputID) {
   div(id=inputoutputID,class=inputoutputID)
 }
 
-# define UI for application that draws a histogram
 shinyUI(fluidPage(
-  # App title
   titlePanel("lmao money hahahaha"),
+
   mainPanel(
     tags$link(rel = "stylesheet", type = "text/css", href = "assets/stylesheets/css/style.css"),
     tags$script(src="http://d3js.org/d3.v3.js"),
@@ -19,6 +18,12 @@ shinyUI(fluidPage(
       div(
         textOutput("moneyPerDay"), class = "money-per-day"
       )
+    )
+  ),
+
+  fluidRow(
+    column(12,
+      uiOutput("dateRange")
     )
   ),
 
