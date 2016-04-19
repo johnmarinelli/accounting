@@ -9,8 +9,8 @@ let buildChart = () => {
       categories = d['Category'],
       minAmt = Math.min.apply(Math, amounts),
       maxAmt = Math.max.apply(Math, amounts),
-      margin = { top: 20, right: 30, bottom: 30, left: 100 },
-      width = 1368 - margin.left - margin.right,
+      margin = { top: 20, right: 30, bottom: 30, left: 50 },
+      width = $(window).width() - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
     
     let y = d3.scale.linear()

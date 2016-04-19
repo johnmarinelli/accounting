@@ -45,11 +45,14 @@ load <- function(filepath) {
 }
 
 preprocess <- function(raw_data) {
+  # remove 'transfer' and 'cash & atm' columns
+  split_data<-raw_data[(raw_data$Category != 'Cash & ATM') & (raw_data$Category != 'Transfer'),]
+  
   date_origin <- '1970-01-01'
   
   # transform factors to dates
-  raw_data$Date <- as.Date(unlist(lapply(raw_data$Date, factor_to_date)), origin = date_origin)  
-  preprocessed_data <- raw_data
+  split_data$Date <- as.Date(unlist(lapply(split_data$Date, factor_to_date)), origin = date_origin)  
+  preprocessed_data <- split_data
 }
 
 process <- function(preprocessed_data) {

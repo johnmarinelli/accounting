@@ -18,7 +18,9 @@ shinyServer(function(input, output) {
     process(get_rows_by_daterange(format(date_range[1]), format(date_range[2]), preprocessed_data))    
   }
 
-  output$dateRange <- renderUI({ dateRangeInput("dateRange", "Dates", start = min(preprocessed_data$Date), end = Sys.Date()) })
+  output$dateRange <- renderUI({
+    dateRangeInput("dateRange", "", start = min(preprocessed_data$Date), end = Sys.Date())
+  })
  
 })
 

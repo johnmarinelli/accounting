@@ -5,8 +5,8 @@ d3 <- function(inputoutputID) {
 }
 
 shinyUI(fluidPage(
-  titlePanel("lmao money hahahaha"),
-
+  tags$div(htmlTemplate("www/navbar.html", dateRange = uiOutput("dateRange"))),
+  
   mainPanel(
     tags$link(rel = "stylesheet", type = "text/css", href = "assets/stylesheets/css/style.css"),
     tags$script(src="http://d3js.org/d3.v3.js"),
@@ -18,12 +18,6 @@ shinyUI(fluidPage(
       div(
         textOutput("moneyPerDay"), class = "money-per-day"
       )
-    )
-  ),
-
-  fluidRow(
-    column(12,
-      uiOutput("dateRange")
     )
   ),
 
