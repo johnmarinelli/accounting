@@ -81,13 +81,18 @@ let buildChart = () => {
         .on('mouseover', (d) => { 
           tip.show(d);
           //let liney = height - _this.y(d.amount);
-          let liney = 10;
+          let liney = y(d.amount);
 
           svg.append('line')
              .attr('class', 'amount-line')
-             .attr({x1: 0, y1: liney, x2: $(window).width(), y2: liney }) 
+             .attr({x1: 0, y1: liney, x2: $(window).width(), y2: liney })
+             .attr('stroke', 'black')
+             .attr('stroke-width', 5);
         })
-        .on('mouseout', tip.hide);
+        .on('mouseout', (d) => {
+          d3.select('.amount-line').remove();
+          tip.hide(d);
+        });
   };
   
   let d3OutputBinding = new Shiny.OutputBinding();
