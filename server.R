@@ -5,11 +5,7 @@ shinyServer(function(input, output) {
   preprocessed_data <- get_preprocessed_data('data/transactions.csv')
 
   output$moneyPerDay <- renderText(
-    paste("You've spent an average of", 
-      format_currency(get_daily_spending_amt('data/transactions.csv')), 
-      "daily.", 
-      sep = " "
-    )
+    format_currency(get_daily_spending_amt('data/transactions.csv'))
   )
 
   output$barplot <- function() {

@@ -5,10 +5,11 @@ d3 <- function(inputoutputID) {
 }
 
 shinyUI(fluidPage(
-  tags$div(htmlTemplate("views/navbar.html", dateRange = uiOutput("dateRange"))),
+  div(htmlTemplate("views/navbar.html", dateRange = uiOutput("dateRange"))),
   
   mainPanel(
     tags$link(rel = "stylesheet", type = "text/css", href = "assets/stylesheets/css/style.css"),
+    tags$link(rel = "stylesheet", href = "https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700,300italic"),
     tags$script(src="http://d3js.org/d3.v3.js"),
     tags$script(src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js")
   ),
@@ -16,7 +17,10 @@ shinyUI(fluidPage(
   fluidRow(
     column(12, 
       div(
-        textOutput("moneyPerDay"), class = "money-per-day"
+        "You've spent an average of ",
+        strong(textOutput("moneyPerDay")),
+        " daily.",
+        class = "money-per-day"
       )
     )
   ),

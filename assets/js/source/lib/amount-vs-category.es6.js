@@ -13,7 +13,8 @@ let buildChart = () => {
       width = $(window).width() - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
     
-    let y = d3.scale.linear()
+    let _this = this,
+      y = d3.scale.linear()
               .domain([0, maxAmt])
               .range([height, 0]),
       x = d3.scale.ordinal()
@@ -66,6 +67,8 @@ let buildChart = () => {
         .style('text-anchor', 'end')
         .text('Amount');
 
+    svg.call(tip)
+
     svg.selectAll('.bar')
       .data(normData)
       .enter().append('rect')
@@ -75,10 +78,16 @@ let buildChart = () => {
         .attr('y', (d) => y(d.amount) )
         .attr('height', (d) => height - y(d.amount))
         .attr('fill', (d) => d3.rgb('red'))
-        .on('mouseover', tip.show)
-        .on('mouseout', tip.hide);
+        .on('mouseover', (d) => { 
+          tip.show(d);
+          //let liney = height - _this.y(d.amount);
+          let liney = 10;
 
-    svg.call(tip)
+          svg.append('line')
+             .attr('class', 'amount-line')
+             .attr({x1: 0, y1: liney, x2: $(window).width(), y2: liney }) 
+        })
+        .on('mouseout', tip.hide);
   };
   
   let d3OutputBinding = new Shiny.OutputBinding();
