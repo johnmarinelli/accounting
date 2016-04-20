@@ -5,7 +5,7 @@ d3 <- function(inputoutputID) {
 }
 
 shinyUI(fluidPage(
-  tags$div(htmlTemplate("www/navbar.html", dateRange = uiOutput("dateRange"))),
+  tags$div(htmlTemplate("views/navbar.html", dateRange = uiOutput("dateRange"))),
   
   mainPanel(
     tags$link(rel = "stylesheet", type = "text/css", href = "assets/stylesheets/css/style.css"),
