@@ -46,7 +46,8 @@ load <- function(filepath) {
 
 preprocess <- function(raw_data) {
   # remove 'transfer' and 'cash & atm' columns
-  split_data<-raw_data[(raw_data$Category != 'Cash & ATM') & (raw_data$Category != 'Transfer') & (raw_data$Category != 'Reimbursement') & (raw_data$Category != 'Paycheck'),]
+  i_dont_care <- c("Cash & ATM", "Transfer", "Reimbursement", "Paycheck", "Income")
+  split_data <- raw_data[!(raw_data$Category %in% i_dont_care),]
   
   date_origin <- '1970-01-01'
   
