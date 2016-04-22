@@ -14,6 +14,11 @@ shinyServer(function(input, output) {
     process(get_rows_by_daterange(format(date_range[1]), format(date_range[2]), preprocessed_data))    
   }
 
+  output$incomeCalendar <- function() {
+    date_range <- c('2016-03-01', '2016-03-31')
+    generate_income_calendar(format(date_range[1]), format(date_range[2]))
+  }
+
   output$dateRange <- renderUI({
     dateRangeInput("dateRange", "", start = min(preprocessed_data$Date), end = Sys.Date())
   })

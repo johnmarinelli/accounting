@@ -67,3 +67,19 @@ get_preprocessed_data <- Compose(load, preprocess)
 get_processed_data <- Compose(load, preprocess, process)
 get_daily_spending_amt <- Compose(load, preprocess, daily_spending_amt)
 
+generate_income_calendar <- function(begin_date, end_date) {
+  # calculate consts
+  net_dollars_per_hr <- 43.27
+
+  # transform transaction data
+  data <- get_preprocessed_data('data/transactions.csv')
+  filtered_data <- get_rows_by_daterange(begin_date, end_date, data)
+
+  sum_taxes <- 1514.25 # mock sum(data$Taxes)
+  sum_rent <- 1595 # mock sum(data$Rent)
+  sum_bills <- 35.75 # mock sum(data$Bills)
+ 
+  Categories <- c("Taxes", "Rent", "Bills")
+  Amounts <- c(sum_taxes, sum_rent, sum_bills)
+  data.frame(Categories, Amounts)
+}
