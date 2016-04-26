@@ -78,8 +78,10 @@ generate_income_calendar <- function(begin_date, end_date) {
   sum_taxes <- 1514.25 # mock sum(data$Taxes)
   sum_rent <- 1595 # mock sum(data$Rent)
   sum_bills <- 35.75 # mock sum(data$Bills)
+  sum_movies <- 15.00 # mock sum(data$Movies)
+  sum_food <- 75.00 # mock sum(data$Food)
  
-  Categories <- c("Taxes", "Rent", "Bills")
-  Amounts <- c(sum_taxes, sum_rent, sum_bills)
+  Categories <- c("Taxes", "Rent", "Bills", "Movies", "Food")
+  Amounts <- c(sum_taxes, sum_rent, sum_bills, sum_movies, sum_food)
   data.frame(Categories, Amounts)
 }

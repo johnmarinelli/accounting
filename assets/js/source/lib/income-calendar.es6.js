@@ -34,17 +34,10 @@ let buildCalendar = (DateFunctions) => {
         let bucketDays = bucket.days,
             totalDays = lastDayBox.total + bucketDays,
             over100 = (totalDays * 100) > 100.00;
-        console.log(lastDayBox);
-        console.log('bucket days: ' + bucketDays);
-        console.log('total days: ' + totalDays);
 
         if (over100) {
-          console.log('over 100');
           let distanceFrom100 = Math.abs(100.00 - lastDayBox.total),
               leftoverBucketDays = Math.abs(bucketDays - (distanceFrom100 / 100));
-          console.log('leftover bucket days: ' + leftoverBucketDays);
-
-          console.log('distanceFrom100: '+ distanceFrom100);
 
           dayBoxes[dayBoxes.length - 1].spending.push({
             category: bucket.category,
