@@ -1,10 +1,7 @@
 let buildCalendar = (DateFunctions) => {
   let d3OutputBinding = new Shiny.OutputBinding();
-  
-  const updateView = (d) => {
-    d3.select('.incomeCalendar svg')
-      .remove();
 
+  const transformData = (d) => {
     const boxColors = {
       Taxes: 'gray',
       Rent: 'blue',
@@ -32,16 +29,16 @@ let buildCalendar = (DateFunctions) => {
       // the last day still has empty space
       if (lastDayBox && lastDayBox.total < 100.00) {
         let bucketDays = bucket.days,
-            totalDays = lastDayBox.total + bucketDays,
-            over100 = (totalDays * 100) > 100.00;
+            totalDays = (lastDayBox.total / 100.00) + bucketDays,
+            over1 = totalDays > 1.00;
 
-        if (over100) {
-          let distanceFrom100 = Math.abs(100.00 - lastDayBox.total),
-              leftoverBucketDays = Math.abs(bucketDays - (distanceFrom100 / 100));
+        if (over1) {
+          let distanceFrom100Percent = Math.abs(100.00 - lastDayBox.total),
+              leftoverBucketDays = Math.abs(bucketDays - (distanceFrom100Percent / 100));
 
           dayBoxes[dayBoxes.length - 1].spending.push({
             category: bucket.category,
-            percentage: distanceFrom100
+            percentage: distanceFrom100Percent
           });
           dayBoxes[dayBoxes.length - 1].total = 100.00;
 
@@ -61,6 +58,7 @@ let buildCalendar = (DateFunctions) => {
             category: bucket.category,
             percentage: bucket.days
           });
+          dayBoxes[dayBoxes.length - 1].total += bucket.days;
         }
       }
 
@@ -91,8 +89,25 @@ let buildCalendar = (DateFunctions) => {
         });
       }
       dayBoxes = Array.prototype.concat.call(dayBoxes, bucketDayBoxes);
-      console.log(dayBoxes);
     }
+
+    let monthDates = DateFunctions.getDaysInMonth(new Date().getMonth());
+    dayBoxes = Array.prototype.map.call(monthDates, (e, i) => {
+      let newDayBox = undefined;
+      if (DateFunctions.isWorkday(e) && dayBoxes.length > 0) {
+        let dayBox = dayBoxes.shift();
+        newDayBox = $.extend(dayBox, { date: e });
+      }
+      return newDayBox;
+    }).filter((e) => e !== undefined);
+    console.log(dayBoxes);
+    return dayBoxes;
+  };
+  
+  const updateView = (d) => {
+    d3.select('.incomeCalendar svg')
+      .remove();
+    let dayBoxes = transformData(d);
   };
 
   $.extend(d3OutputBinding, {

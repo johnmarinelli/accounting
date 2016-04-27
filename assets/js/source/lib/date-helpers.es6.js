@@ -1,13 +1,14 @@
 let DateFunctions = () => {
-  this.isWorkday = (date) => Array.prototype.indexOf.call([1,2,3,4,5], date.getDay()) > -1;
-  this.isWeekend = (date) => !this.isWorkday(date);
-
   this.daysInMonth = (date) => {
     return new Date(date.getFullYear(), date.getMonth(), 0).getDate();
   };
 
   return this;
 };
+
+const isWorkday = (date) => Array.prototype.indexOf.call([1,2,3,4,5], date.getDay()) > -1;
+const isWeekend = (date) => !isWorkday(date);
+
 const getFirstDayOfMonth = (monthNumber = Date.getMonth()) => {
   let date = new Date();
   return new Date(date.getFullYear(), date.getMonth(), 1);
@@ -43,4 +44,4 @@ const getDaysInMonth = (monthNumber) => {
   return getDatesInRange(getFirstDayOfMonth(monthNumber), getLastDayOfMonth(monthNumber));
 };
 
-export { daysInMonth, getDaysInMonth }
+export { daysInMonth, getDaysInMonth, isWorkday }
