@@ -15,8 +15,8 @@ let buildChart = () => {
     
     let _this = this,
       y = d3.scale.linear()
-              .domain([0, maxAmt])
-              .range([height, 0]),
+            .domain([0, maxAmt])
+            .range([height, 0]),
       x = d3.scale.ordinal()
             .domain(categories)
             .rangeRoundBands([0, width], 0.1),
@@ -44,8 +44,8 @@ let buildChart = () => {
       svg = d3.select('.barplot').append('svg')
               .attr('width', width + margin.left + margin.right)
               .attr('height', height + margin.top + margin.bottom)
-                .append('g')
-                .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+              .append('g')
+              .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     let normData = [];
     Array.prototype.forEach.call(categories, (e, i) => {

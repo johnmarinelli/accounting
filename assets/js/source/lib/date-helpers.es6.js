@@ -14,6 +14,12 @@ const getFirstDayOfMonth = (monthNumber = Date.getMonth()) => {
   return new Date(date.getFullYear(), date.getMonth(), 1);
 };
 
+const getWeekOfMonth = (date) => {
+  let firstWeekday = new Date(date.getFullYear(), date.getMonth(), 1).getDay(),
+      offsetDate = date.getDate() + firstWeekday - 1;
+  return Math.floor(offsetDate / 7);
+};
+
 const getLastDayOfMonth = (monthNumber = Date.getMonth()) => {
   let date = new Date();
   return new Date(date.getFullYear(), date.getMonth() + 1, 0);
@@ -44,4 +50,4 @@ const getDaysInMonth = (monthNumber) => {
   return getDatesInRange(getFirstDayOfMonth(monthNumber), getLastDayOfMonth(monthNumber));
 };
 
-export { daysInMonth, getDaysInMonth, isWorkday }
+export { daysInMonth, getDaysInMonth, isWorkday, getWeekOfMonth }
