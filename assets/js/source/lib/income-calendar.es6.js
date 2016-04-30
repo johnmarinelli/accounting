@@ -141,7 +141,8 @@ let buildCalendar = (DateFunctions) => {
 
         // if previous rect isn't full
         if (lastRect.width < dayBoxWidth && +((lastRect.x + lastRect.width) % dayBoxWidth).toFixed(2) !== 0) {
-          let diff = dayBoxWidth - lastRect.width;
+          let diff = nextXInc - (lastRect.x + lastRect.width);
+
           // fill the remaining space of previous rect
           subrects.push({
             x: xitr,
@@ -153,10 +154,9 @@ let buildCalendar = (DateFunctions) => {
           });
           xitr = xitr + diff;
         }
-        console.log('nextXInc: ' + nextXInc);
 
         subrects.push({
-          x: nextXInc,
+          x: xitr,
           y: yitr,
           width: dayBoxWidth,
           height: dayBoxHeight,
@@ -164,9 +164,8 @@ let buildCalendar = (DateFunctions) => {
           category: 'None'
         });
 
-        xitr = nextXInc >= calendarWidth ? 0 : nextXInc;
+        xitr = Math.round(xitr + dayBoxWidth) >= calendarWidth ? 0 : xitr + dayBoxWidth;
       }
-      console.log(xitr);
 
       rects = rects.concat(subrects);
     });
