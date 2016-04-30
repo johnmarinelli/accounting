@@ -115,7 +115,6 @@ let buildCalendar = (DateFunctions) => {
     Array.prototype.forEach.call(d, (bucket, i) => {
       let subrects = [],
         xIncAmount;
-    console.log('xitr before: ' + xitr);
 
       yitr = dayBoxHeight * DateFunctions.getWeekOfMonth(bucket.date);
 
@@ -123,7 +122,6 @@ let buildCalendar = (DateFunctions) => {
         // each spending area
         subrects = Array.prototype.map.call(bucket.spending, (spendingArea, j) => {
           xIncAmount = (spendingArea.percentage / 100) * dayBoxWidth;
-          console.log('xincamount with spending: ' + xIncAmount);
           let r = {
             x: xitr,
             y: yitr,
@@ -138,12 +136,12 @@ let buildCalendar = (DateFunctions) => {
         });
       }
       else {
-        let nextXInc = dayBoxWidth * (Math.ceil(xitr / dayBoxWidth));
-        console.log('nextxincrement without spending: ' + nextXInc);
+        let nextXInc = dayBoxWidth * (Math.ceil(xitr / dayBoxWidth)),
+          lastRect = rects[rects.length - 1];
 
         // if previous rect isn't full
-        if (rects[rects.length - 1].width < dayBoxWidth) {
-          let diff = dayBoxWidth - rects[rects.length - 1].width;
+        if (lastRect.width < dayBoxWidth && +((lastRect.x + lastRect.width) % dayBoxWidth).toFixed(2) !== 0) {
+          let diff = dayBoxWidth - lastRect.width;
           // fill the remaining space of previous rect
           subrects.push({
             x: xitr,
@@ -155,12 +153,10 @@ let buildCalendar = (DateFunctions) => {
           });
           xitr = xitr + diff;
         }
-
-        if (nextXInc >= calendarWidth) console.log(nextXInc);
-        xitr = nextXInc >= calendarWidth ? 0 : nextXInc;
+        console.log('nextXInc: ' + nextXInc);
 
         subrects.push({
-          x: xitr,
+          x: nextXInc,
           y: yitr,
           width: dayBoxWidth,
           height: dayBoxHeight,
@@ -168,8 +164,9 @@ let buildCalendar = (DateFunctions) => {
           category: 'None'
         });
 
-        xitr += dayBoxWidth;
+        xitr = nextXInc >= calendarWidth ? 0 : nextXInc;
       }
+      console.log(xitr);
 
       rects = rects.concat(subrects);
     });
