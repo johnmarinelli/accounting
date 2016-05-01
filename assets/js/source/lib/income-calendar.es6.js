@@ -100,12 +100,6 @@ let buildCalendar = (DateFunctions) => {
     }).filter((e) => e !== undefined);
   };
 
-  //const attachCoordinatesToBuckets = (dayBoxes, w, h) => {
-  //  return Array.prototype.map.call(dayBoxes, (e, i) => 
-  //    $.extend(e, { x: w * e.date.getDay(), y: h * DateFunctions.getWeekOfMonth(e.date) })
-  //  );
-  //};
-
   const expandBucketsToRects = (d) => {
     let rects = [],
         xitr = dayBoxWidth * d[0].date.getDay(), 
@@ -140,7 +134,7 @@ let buildCalendar = (DateFunctions) => {
           lastRect = rects[rects.length - 1];
 
         // if previous rect isn't full
-        if (lastRect.width < dayBoxWidth && +((lastRect.x + lastRect.width) % dayBoxWidth).toFixed(2) !== 0) {
+        if (lastRect !== undefined && lastRect.width < dayBoxWidth && +((lastRect.x + lastRect.width) % dayBoxWidth).toFixed(2) !== 0) {
           let diff = nextXInc - (lastRect.x + lastRect.width);
 
           // fill the remaining space of previous rect
@@ -176,7 +170,6 @@ let buildCalendar = (DateFunctions) => {
   const transformData = (d) => {
     let dayBoxes = placeSpendingInBuckets(d);
     dayBoxes = attachDatesToBuckets(dayBoxes);
-    console.log(dayBoxes);
     dayBoxes = expandBucketsToRects(dayBoxes);
     return dayBoxes;
   };
@@ -185,13 +178,19 @@ let buildCalendar = (DateFunctions) => {
     d3.select('.incomeCalendar svg')
       .remove();
     let dayBoxes = transformData(d);
+    let categoryToIndex = {};
+    Array.prototype.forEach.call(d.Categories, (e, i) => categoryToIndex[e] = i);
 
+    let colorRange = ["#18c61a", "#9817ff", "#d31911", "#24b7f1", "#fa82ce", "#736c31", "#1263e2", "#18c199", "#ed990a", "#f2917f", "#7b637c", "#a8b311", "#a438c0", "#d00d5e", "#1e7b1d", "#05767b", "#aaa1f9", "#a5aea1", "#a75312", "#026eb8", "#94b665", "#91529e", "#caa74f", "#c90392", "#a84e5d", "#6a4cf1", "#1ac463", "#d89ab1", "#3c764d", "#2dbdc5", "#fb78fa", "#a6a9cd", "#c1383d", "#8b614e", "#73be38", "#ff8d52"];
     console.log(dayBoxes);
 
     let svg = d3.select('.incomeCalendar').append('svg')
                 .attr('width', calendarWidth)
                 .attr('height', height)
-                .append('g');
+                .append('g'),
+        colors = d3.scale.linear()
+                   .domain(d.Categories.map((e,i) => i))
+                   .range(colorRange);
                 //.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     svg.selectAll('.daybox')
@@ -202,7 +201,7 @@ let buildCalendar = (DateFunctions) => {
         .attr('width', (d) => d.width)
         .attr('y', (d) => d.y)
         .attr('height', (d) => d.height)
-        .attr('fill', (d) => d.color)
+        .attr('fill', (d) => colors(categoryToIndex[d.category]))
         .style('stroke', 'black')
         .style('stroke-width', 1);
   };
