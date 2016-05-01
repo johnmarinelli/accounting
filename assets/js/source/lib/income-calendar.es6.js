@@ -121,7 +121,6 @@ let buildCalendar = (DateFunctions) => {
             y: yitr,
             width: xIncAmount,
             height: dayBoxHeight,
-            color: BOX_COLORS[spendingArea.category],
             category: spendingArea.category
           };
           xitr = Math.ceil(xitr + xIncAmount) >= calendarWidth ? 0 : xitr + xIncAmount;
@@ -190,7 +189,12 @@ let buildCalendar = (DateFunctions) => {
                 .append('g'),
         colors = d3.scale.linear()
                    .domain(d.Categories.map((e,i) => i))
-                   .range(colorRange);
+                   .range(colorRange),
+        tip = d3.tip()
+                .attr('class', 'calendar-category-label')
+                .offset([50, 0]).html((d) => d.category);
+
+    svg.call(tip);
                 //.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     svg.selectAll('.daybox')
@@ -203,7 +207,13 @@ let buildCalendar = (DateFunctions) => {
         .attr('height', (d) => d.height)
         .attr('fill', (d) => colors(categoryToIndex[d.category]))
         .style('stroke', 'black')
-        .style('stroke-width', 1);
+        .style('stroke-width', 1)
+        .on('mouseover', tip.show);
+
+    svg.selectAll('text')
+       .data(dayBoxes)
+       .attr('x', (d) => d.x + d.width / 2)
+
   };
 
   let margin = { top: 20, right: 30, bottom: 30, left: 50 },
@@ -211,14 +221,6 @@ let buildCalendar = (DateFunctions) => {
     height = 1000 - margin.top - margin.bottom,
     dayBoxWidth = calendarWidth / 7,
     dayBoxHeight = dayBoxWidth;
-
-  const BOX_COLORS= {
-    Taxes: 'yellow',
-    Rent: 'blue',
-    Bills: 'red', 
-    Movies: 'green',
-    Food: 'purple'
-  };
 
   $.extend(d3OutputBinding, {
     find: (scope) => $(scope).find('.incomeCalendar'),
