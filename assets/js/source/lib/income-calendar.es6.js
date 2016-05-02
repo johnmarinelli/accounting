@@ -167,6 +167,7 @@ let buildCalendar = (DateFunctions) => {
   };
 
   const transformData = (d) => {
+    console.log(d);
     let dayBoxes = placeSpendingInBuckets(d);
     dayBoxes = attachDatesToBuckets(dayBoxes);
     dayBoxes = expandBucketsToRects(dayBoxes);
@@ -180,8 +181,7 @@ let buildCalendar = (DateFunctions) => {
     let categoryToIndex = {};
     Array.prototype.forEach.call(d.Categories, (e, i) => categoryToIndex[e] = i);
 
-    let colorRange = ["#18c61a", "#9817ff", "#d31911", "#24b7f1", "#fa82ce", "#736c31", "#1263e2", "#18c199", "#ed990a", "#f2917f", "#7b637c", "#a8b311", "#a438c0", "#d00d5e", "#1e7b1d", "#05767b", "#aaa1f9", "#a5aea1", "#a75312", "#026eb8", "#94b665", "#91529e", "#caa74f", "#c90392", "#a84e5d", "#6a4cf1", "#1ac463", "#d89ab1", "#3c764d", "#2dbdc5", "#fb78fa", "#a6a9cd", "#c1383d", "#8b614e", "#73be38", "#ff8d52"];
-    console.log(dayBoxes);
+    const BOX_COLORS = [ "#AF4B56", "#66D02F", "#CE6CDD", "#399D29", "#DC449D", "#5DCE67", "#DE3573", "#91BE43", "#6B77D9", "#E6AC30", "#5BA1D8", "#DD422E", "#49C8D2", "#D83951", "#4FC189", "#B159A5", "#B5B634", "#9F92D8", "#55882C", "#DB95D5", "#747627", "#896094", "#DD7129", "#556F9A", "#BC8730", "#2C8688", "#E4725E", "#3D844F", "#CD668B", "#A1592D"]
 
     let svg = d3.select('.incomeCalendar').append('svg')
                 .attr('width', calendarWidth)
@@ -189,13 +189,12 @@ let buildCalendar = (DateFunctions) => {
                 .append('g'),
         colors = d3.scale.linear()
                    .domain(d.Categories.map((e,i) => i))
-                   .range(colorRange),
+                   .range(BOX_COLORS),
         tip = d3.tip()
                 .attr('class', 'calendar-category-label')
                 .offset([50, 0]).html((d) => d.category);
 
     svg.call(tip);
-                //.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     svg.selectAll('.daybox')
       .data(dayBoxes)

@@ -26,7 +26,12 @@ shinyUI(fluidPage(
 
   fluidRow(
     column(12,
-      #d3("barplot"),
+      d3("barplot")
+    )
+  ),
+
+  fluidRow(
+    column(12,
       d3("incomeCalendar"),
       includeScript("assets/js/compiled/bundle.js")
     )
