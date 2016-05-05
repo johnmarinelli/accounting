@@ -2,6 +2,7 @@ library(shiny)
 library(functional) # for Curry
 source('lib/amount_vs_category.r')
 source('lib/income_calendar.r')
+source('lib/daily_spending.r')
 
 shinyServer(function(input, output) {
   expenses <- get_expenses('data/transactions.csv')
