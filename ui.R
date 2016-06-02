@@ -7,6 +7,7 @@ d3 <- function(inputoutputID) {
 shinyUI(fluidPage(
   div(htmlTemplate("views/navbar.html", dateRange = uiOutput("dateRange"))),
 
+  div(includeScript("www/main.out/goog/base.js")),
   div(includeScript("www/main.js"))
   
 ))
